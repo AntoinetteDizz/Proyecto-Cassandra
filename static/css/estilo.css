@@ -1,0 +1,248 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
+
+/*DEFAULT*/
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	text-decoration: none;
+	list-style: none;
+}
+
+/*Fuente de texto*/
+body {
+	font-family: 'Poppins', sans-serif;
+}
+
+/*Tamaño de imagenes*/
+img {
+	max-width: 100%;
+}
+
+/*Mantener contenido centrado para que no se desborde*/
+.container {
+	max-width: 1100px;
+	margin: 0 auto;
+}
+
+/*Elementos del header*/
+.header {
+	background-color: #FAFAFA;
+	/* padding: 150px 0 100px 0; */
+	padding: 150px 0 0px 0;
+	/* min-height: 70vh; */
+	display: flex;
+	align-items: center;
+}
+
+.headerl {
+	/* background-color: #FAFAFA; */
+	padding: 150px 0 100px 0;
+	min-height: 70vh;
+	align-items: center;
+}
+
+/*Elementos del menú*/
+.menu {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+/*Alinear barra de navegación a la izquierda*/
+.menu .navbar ul li {
+	position: relative;
+	float: left;
+}
+
+/*Anchor de los enlaces de navegación*/
+.menu .navbar ul li a {
+	font-size: 18px;
+	padding: 20px;
+	color: #323232; 
+	display: block;
+}
+
+/*Color al pulsar opciones de menú*/
+.menu .navbar ul li a:hover {
+	color: #02B1F4;
+}
+
+/*Diseños del logo*/
+.logo {
+	font-size: 25px;
+	font-weight: 800;
+	color: #02B1F4;
+	text-transform: uppercase;
+}
+
+#menu {
+	display: none;
+}
+
+.menu-icono {
+	width: 25px;
+}
+
+.menu label {
+	cursor: pointer;
+	display: none;
+}
+
+/*Contenido de cabecera*/
+.header-content {
+	display: flex; 
+}
+
+/*Tamaño de texto de la cabecera*/
+.header-txt {
+	width: 50%; 
+}
+
+/*Diseño h1*/
+.header-txt h1 {
+	line-height: 1;
+	color: #323232;
+	text-transform: uppercase;
+	font-size: 50px;
+	margin-bottom: 10px;
+}
+
+/*Diseño parrafo de cabecera*/
+.header-txt p {
+	font-size: 16px;
+	color: #818181;
+	margin-bottom: 45px;
+}
+
+/*Tamaño de imagen de cabecera*/
+.header-img{
+	width: 50%;
+}
+
+/*Estilo de boton*/
+.btn-1 {
+	display: inline-block;
+	padding: 11px 25px;
+	background-color: #02B1F4;
+	color: #FFFFFF;
+	border-radius: 15px;
+}
+
+/*Margenes de About*/
+.about {
+	padding: 100px 0;
+	display: flex;
+}
+
+/*Tamaño de imagen de About*/
+.about-img {
+	width: 50%;
+}
+
+/*Tamaño de imagen de About*/
+.about-img img {
+	width: 500px;
+	border-radius: 15px;
+}
+
+/*Tamaño de texto de about*/
+.about-txt {
+	width: 50%;
+	margin-left: 25px;
+}
+
+/*Diseño h2*/
+.about-txt h2 {
+	color: #323232;
+	font-size: 50px;
+	margin-bottom: 15px;
+}
+
+/*Diseño parrafo de about*/
+.about-txt p {
+	font-size: 16px;
+	color: #818181;
+}
+
+/*Sección de servicios*/
+.servicios {
+	padding: 50px 0 100px 0;
+	text-align: center;
+	background-color: #FAFAFA;
+}
+
+/*Diseño h2*/
+.servicios h2 {
+	color: #323232;
+	font-size: 50px;
+	margin-bottom: 15px;
+}
+
+/*Diseño de contenido de Servicios*/
+.servicios-content {
+	margin-top: 55px;
+	display: flex;
+	justify-content: space-between; 
+}
+
+.servicio-1 {
+	padding: 25px;
+	box-shadow: 0 0 20px rgba(0,0,0,0.1);
+	flex-basis: calc(25% - 20px);
+}
+
+/*Diseño de Iconos*/
+.servicio-1 i {
+	font-size: 30px;
+	color: #02B1F4;
+	margin-bottom: 15px;
+}
+
+/*Diseño de h3*/
+.servicio-1 h3 {
+	font-size: 20px;
+	color: #323232;
+	margin-bottom: 15px;
+}
+
+/*Estilo de pie de página*/
+.footer {
+	padding: 50px;
+	background-color: #FAFAFA;
+}
+
+/*Contenido de pie de página*/
+.footer-content {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+/*Estilo de lista de pie de página*/
+.link ul {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.link ul li {
+	margin-right: 50px;
+}
+
+.link ul li a {
+	color: #323232;
+	font-size: 17px;
+}
+
+.link ul li a:hover {
+	color: #02B1F4;
+}
+
+.text-danger {
+	color: red;
+}

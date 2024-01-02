@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Supermarket - Crear Producto</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+</head>
+
+<body>
+
+    <!-- Cabecera principal -->
+    <header class="header">
+
+        <!-- Menú -->
+        <div class="menu container">
+
+            <!-- Enlace simulacro para el logo -->
+            <a href="../panel.php" class="logo">SUPERMARKET</a>
+
+            <input type="checkbox" id="menu"/>
+
+            <!-- Referencia al menú -->
+            <label for="menu">
+                <img src="Imagenes/menu.png" class="menu-icono" alt="menu">
+            </label>
+
+            <!-- Navegación -->
+            <nav class="navbar">
+
+                <!-- Lista de enlaces -->
+                <ul>
+                    <li><a href="panel.html">Inicio</a></li>
+                    <li><a href="">Clientes</a></li>
+                    <li><a href="">Productos</a></li>
+                    <li><a href="">Facturas</a></li>
+                    <li><a href="">Cerrar Sesión</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <form method="POST" action="">
+        <section class="h-100 h-custom gradient-custom-2">
+            <div class="container py-5 h-80">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12">
+                        <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                            <div class="card-body p-0">
+                                <div class="row g-0">
+
+                                    <div class="p-5">
+                                        <h3 class="fw-normal mb-5" style="color: #4835d4;">Agregar Producto</h3>
+
+                                        <div class="mb-4 pb-2">
+                                            <div class="form-outline">
+                                                <label class="form-label" for="form3Examplev5">Nombre:</label>
+                                                <input type="text" name="nombre" id="form3Examplev5" class="form-control form-control-lg" placeholder="Ej: Cámara digital DSLR Canon EOS Rebel T7i" required />
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-4 pb-2">
+                                            <div class="form-outline">
+                                                <label class="form-label" for="form3Examplev5">Descripción:</label>
+                                                <input type="text" name="descripcion" id="form3Examplev5" class="form-control form-control-lg" 
+                                                placeholder="Ej: Cámara con Sensor de 24.2 MP, video Full HD, pantalla táctil articulada y..." required />
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-4 pb-2">
+                                            <div class="form-outline">
+                                                <label class="form-label" for="form3Examplev4">Unidades:</label>
+                                                <input type="number" name="unidades" id="form3Examplev4" class="form-control form-control-lg" placeholder="Ej: 30" required />
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-4 pb-2">
+                                            <label class="form-label" for="form3Examplea4">Indique si el producto está en promoción: </label>
+                                            <select class="select" name="promocion" required>
+                                                <option value="" selected disabled hidden>Seleccione una opción</option>
+                                                <option value="">Sí</option>
+                                                <option value="">No</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-4 pb-2">
+                                            <div class="form-outline">
+                                                <label class="form-label" for="form3Examplev4">Precio:</label>
+                                                <input type="text" name="precio" id="form3Examplev4" class="form-control form-control-lg" placeholder="Ej: 799.99" step="any" required />
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+
+                                            <button type="submit" class="btn btn-light btn-lg" style="background-color: #02B1F4; color: white;" data-mdb-ripple-color="dark">Registrar</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </section>
+
+    </form>
+    </footer>
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+    </script>
+</body>
+</html>
