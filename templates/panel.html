@@ -84,13 +84,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for row in rows %}
+                    {% for client in clients %}
                     <tr>
-                        <td>{{ row.ci }}</td>
-                        <td>{{ row.name }}</td>
-                        <td>{{ row.last_name }}</td>
-                        <td>{{ row.gender }}</td>
-                        <td>{{ row.age }}</td>
+                        <td>{{ client.ci }}</td>
+                        <td>{{ client.name }}</td>
+                        <td>{{ client.last_name }}</td>
+                        <td>{{ client.gender }}</td>
+                        <td>{{ client.age }}</td>
                         <td>
                             <a href="">Editar</a>
                             <a class="text-danger" href="">Eliminar</a>
@@ -119,14 +119,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for row in rows %}
+                    {% for product in products %}
                     <tr>
-                        <td>{{ row.id }}</td>
-                        <td>{{ row.descripcion }}</td>
-                        <td>{{ row.name }}</td>
-                        <td>{{ row.price }}</td>
-                        <td>{{ row.promotion }}</td>
-                        <td>{{ row.stock }}</td>
+                        <td>{{ product.id }}</td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.description }}</td>
+                        <td>{{ product.stock }}</td>
+                        <td>{{ product.promotion }}</td>
+                        <td>{{ product.price }}</td>
                         <td>
                             <a href="">Editar</a>
                             <a class="text-danger" href="">Eliminar</a>

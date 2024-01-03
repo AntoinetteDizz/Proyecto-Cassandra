@@ -61,10 +61,12 @@ def login():
 def panel():
      
     # Realizar consulta a la base de datos Cassandra
-    rows = session.execute("SELECT * FROM clientes")
+    clients = session.execute("SELECT * FROM clientes")
+    products = session.execute("SELECT * FROM productos")
 
     # Mostrar resultados en una plantilla HTML
-    return render_template('panel.html', rows=rows)
+    return render_template('panel.html', clients=clients, products=products)
+
 ##############################
 
 if __name__ == '__main__':
