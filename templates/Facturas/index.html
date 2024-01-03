@@ -115,7 +115,7 @@
 
         <form action="search.php" method="GET">
             <label for="id">Ingrese el código de la Factura:</label>
-            <input type="text" id="id" name="id" required placeholder="Ej: 12345678">
+            <input type="text" id="id" name="id" required placeholder="Ej: 49809a51-6d58-4f62-acff-f8">
             <button type="submit">Buscar</button>
         </form>
     </section>
@@ -137,17 +137,20 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for bill in bills %}
                     <tr>
-                        <td>23kjh23k5b23jk4gj</td>
-                        <td>1234567</td>
-                        <td>50,00</td>
-                        <td>12/11/2023</td>
-                        <td>Débito</td>
+                        <td>{{ bill.id }}</td>
+                        <td>{{ bill.ci_cliente }}</td>
+                        <td>{{ bill.amount }}</td>
+                        <td>{{ bill.date }}</td>
+                        <td>{{ bill.payment_method }}</td>
                         <td>
-                            <a href="edit.php?id=<?php echo $socio['cedula']; ?>">Detalles</a>
-                            <a href="edit.php?id=<?php echo $socio['cedula']; ?>">Editar</a>
-                            <a class="text-danger" href="delete.php?id=<?php echo $socio['cedula']; ?>">Eliminar</a>
+                            <a href="">Detalles</a>
+                            <a href="">Editar</a>
+                            <a class="text-danger" href="">Eliminar</a>
                         </td>
+                    </tr>
+                    {% endfor %}
                     </tr>
                 </tbody>
                 </table>

@@ -115,7 +115,7 @@
 
         <form action="search.php" method="GET">
             <label for="id">Ingrese Código del Producto:</label>
-            <input type="text" id="id" name="id" required placeholder="Ej: 12345678">
+            <input type="text" id="id" name="id" required placeholder="Ej: 507cef29-7cce-4e60-ab3e-38">
             <button type="submit">Buscar</button>
         </form>
     </section>
@@ -138,18 +138,20 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for product in products %}
                     <tr>
-                        <td>Cdfsd7g6gdf87gf</td>
-                        <td>Acetona - Removedor de esmalte</td>
-                        <td>Liquido para remover la pintura de uñas</td>
-                        <td>30</td>
-                        <td>No</td>
-                        <td>34,2</td>
+                        <td>{{ product.id }}</td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.description }}</td>
+                        <td>{{ product.stock }}</td>
+                        <td>{{ product.promotion }}</td>
+                        <td>{{ product.price }}</td>
                         <td>
-                            <a href="edit.php?id=<?php echo $socio['cedula']; ?>">Editar</a>
-                            <a class="text-danger" href="delete.php?id=<?php echo $socio['cedula']; ?>">Eliminar</a>
+                            <a href="">Editar</a>
+                            <a class="text-danger" href="">Eliminar</a>
                         </td>
                     </tr>
+                    {% endfor %}
                 </tbody>
                 </table>
             </div>

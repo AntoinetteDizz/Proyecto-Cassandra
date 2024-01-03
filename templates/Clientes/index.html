@@ -137,17 +137,19 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for client in clients %}
                     <tr>
-                        <td>1234567</td>
-                        <td>Segismundo</td>
-                        <td>Garcia</td>
-                        <td>M</td>
-                        <td>38</td>
+                        <td>{{ client.ci }}</td>
+                        <td>{{ client.name }}</td>
+                        <td>{{ client.last_name }}</td>
+                        <td>{{ client.gender }}</td>
+                        <td>{{ client.age }}</td>
                         <td>
-                            <a href="edit.php?id=<?php echo $socio['cedula']; ?>">Editar</a>
-                            <a class="text-danger" href="delete.php?id=<?php echo $socio['cedula']; ?>">Eliminar</a>
+                            <a href="">Editar</a>
+                            <a class="text-danger" href="">Eliminar</a>
                         </td>
                     </tr>
+                    {% endfor %}
                 </tbody>
                 </table>
             </div>

@@ -7,33 +7,20 @@ app = Flask(__name__)
 cluster = Cluster(['127.0.0.1'])  # IP de nodo de Cassandra
 session = cluster.connect('supermarket')  # Mi keyspace
 
+
+#----------------------------------------Rutas
 @app.route('/')
 def index():
     return render_template('login.html')
-
-#----------------------------------------rutas
-@app.route('/clientes')
-def clientes_index():
-    # Lógica para la página de clientes
-    return render_template('clientes/index.html')
-
-@app.route('/productos')
-def productos_index():
-    # Lógica para la página de productos
-    return render_template('productos/index.html')
-
-@app.route('/facturas')
-def facturas_index():
-    # Lógica para la página de facturas
-    return render_template('facturas/index.html')
 
 @app.route('/logout')
 def logout():
     # Lógica para cerrar sesión
     return redirect(url_for('index'))
-#-----------------------------------------rutas
+#----------------------------------------Rutas
 
 
+#-----------------------------------------Lógica de login
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -55,8 +42,10 @@ def login():
 
     # Si el método es GET o si la validación falla, mostrar la página de login
     return render_template('login')
+#----------------------------------------Lógica de login
 
-##############################
+
+#----------------------------------------Lógica de Panel Principal
 @app.route('/panel')
 def panel():
      
@@ -67,7 +56,42 @@ def panel():
     # Mostrar resultados en una plantilla HTML
     return render_template('panel.html', clients=clients, products=products)
 
-##############################
+#----------------------------------------Lógica de Panel Principal
+
+
+#----------------------------------------Lógica de Clientes/Index
+@app.route('/clientes')
+def clientes_index():
+
+    # Realizar consulta a la base de datos Cassandra
+    clients = session.execute("SELECT * FROM clientes")
+    
+    # Mostrar resultados en una plantilla HTML
+    return render_template('clientes/index.html', clients=clients)
+#----------------------------------------Lógica de Clientes/Index
+
+
+#----------------------------------------Lógica de Productos/Index
+@app.route('/productos')
+def productos_index():
+
+    products = session.execute("SELECT * FROM productos")
+
+    # Mostrar resultados en una plantilla HTML
+    return render_template('productos/index.html', products=products)
+#----------------------------------------Lógica de Productos/Index
+
+
+#----------------------------------------Lógica de Facturas/Index
+@app.route('/facturas')
+def facturas_index():
+
+    bills = session.execute("SELECT * FROM factura")
+
+    # Lógica para la página de facturas
+    return render_template('facturas/index.html', bills=bills)
+#----------------------------------------Lógica de Facturas/Index
+
 
 if __name__ == '__main__':
     app.run(debug=True)
