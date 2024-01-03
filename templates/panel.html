@@ -119,18 +119,20 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for row in rows %}
                     <tr>
-                        <td>Cdfsd7g6gdf87gf</td>
-                        <td>Acetona - Removedor de esmalte</td>
-                        <td>Liquido para remover la pintura de uñas</td>
-                        <td>30</td>
-                        <td>No</td>
-                        <td>34,2</td>
+                        <td>{{ row.id }}</td>
+                        <td>{{ row.descripcion }}</td>
+                        <td>{{ row.name }}</td>
+                        <td>{{ row.price }}</td>
+                        <td>{{ row.promotion }}</td>
+                        <td>{{ row.stock }}</td>
                         <td>
-                            <a href="edit.php?id=<?php echo $socio['cedula']; ?>">Editar</a>
-                            <a class="text-danger" href="delete.php?id=<?php echo $socio['cedula']; ?>">Eliminar</a>
+                            <a href="">Editar</a>
+                            <a class="text-danger" href="">Eliminar</a>
                         </td>
                     </tr>
+                    {% endfor %}
                 </tbody>
                 </table>
             </div>
