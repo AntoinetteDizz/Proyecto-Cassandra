@@ -99,11 +99,11 @@
 
                 <!-- Lista de enlaces -->
                 <ul>
-                    <li><a href="panel.html">Inicio</a></li>
-                    <li><a href="">Clientes</a></li>
-                    <li><a href="">Productos</a></li>
-                    <li><a href="">Facturas</a></li>
-                    <li><a href="">Cerrar Sesión</a></li>
+                    <li><a href="{{ url_for('panel') }}">Inicio</a></li>
+                    <li><a href="{{ url_for('clientes_index') }}">Clientes</a></li>
+                    <li><a href="{{ url_for('productos_index') }}">Productos</a></li>
+                    <li><a href="{{ url_for('facturas_index') }}">Facturas</a></li>
+                    <li><a href="{{ url_for('logout') }}">Cerrar Sesión</a></li>
                 </ul>
             </nav>
         </div>

@@ -58,11 +58,11 @@
 
                 <!-- Lista de enlaces -->
                 <ul>
-                    <li><a href="panel.html">Inicio</a></li>
-                    <li><a href="">Clientes</a></li>
-                    <li><a href="">Productos</a></li>
-                    <li><a href="">Facturas</a></li>
-                    <li><a href="">Cerrar Sesión</a></li>
+                    <li><a href="{{ url_for('panel') }}">Inicio</a></li>
+                    <li><a href="{{ url_for('clientes_index') }}">Clientes</a></li>
+                    <li><a href="{{ url_for('productos_index') }}">Productos</a></li>
+                    <li><a href="{{ url_for('facturas_index') }}">Facturas</a></li>
+                    <li><a href="{{ url_for('logout') }}">Cerrar Sesión</a></li>
                 </ul>
             </nav>
         </div>
@@ -84,24 +84,25 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for row in rows %}
                     <tr>
-                        <td>1234567</td>
-                        <td>Segismundo</td>
-                        <td>Garcia</td>
-                        <td>M</td>
-                        <td>38</td>
+                        <td>{{ row.ci }}</td>
+                        <td>{{ row.name }}</td>
+                        <td>{{ row.last_name }}</td>
+                        <td>{{ row.gender }}</td>
+                        <td>{{ row.age }}</td>
                         <td>
-                            <a href="edit.php?id=<?php echo $socio['cedula']; ?>">Editar</a>
-                            <a class="text-danger" href="delete.php?id=<?php echo $socio['cedula']; ?>">Eliminar</a>
+                            <a href="">Editar</a>
+                            <a class="text-danger" href="">Eliminar</a>
                         </td>
                     </tr>
+                    {% endfor %}
                 </tbody>
                 </table>
             </div>
         </div>
     </section>
-
-    <section class="accesos container">
+<section class="accesos container">
         <div class="row">
             <div class="col">
                 <h2>Productos</h2>
