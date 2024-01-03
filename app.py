@@ -17,6 +17,18 @@ def index():
 def logout():
     # Lógica para cerrar sesión
     return redirect(url_for('index'))
+
+@app.route('/crear_cliente')
+def crear_cliente():
+    return render_template('Clientes/create.html')
+
+@app.route('/crear_factura')
+def crear_factura():
+    return render_template('Facturas/create.html')
+
+@app.route('/crear_producto')
+def crear_producto():
+    return render_template('Productos/create.html')
 #----------------------------------------Rutas
 
 
