@@ -146,7 +146,7 @@
                         <td>{{ client.age }}</td>
                         <td>
                             <a href="">Editar</a>
-                            <a class="text-danger" href="">Eliminar</a>
+                            <a class="text-danger" href="{{ url_for('eliminar_cliente', ci=client.ci) }}">Eliminar</a>
                         </td>
                     </tr>
                     {% endfor %}

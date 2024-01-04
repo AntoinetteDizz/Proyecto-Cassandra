@@ -148,7 +148,7 @@
                         <td>{{ product.price }}</td>
                         <td>
                             <a href="">Editar</a>
-                            <a class="text-danger" href="">Eliminar</a>
+                            <a class="text-danger" href="{{ url_for('eliminar_producto', product_id=product.id) }}">Eliminar</a>
                         </td>
                     </tr>
                     {% endfor %}

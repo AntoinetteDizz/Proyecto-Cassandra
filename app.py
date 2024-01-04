@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from cassandra.cluster import Cluster 
+from uuid import UUID
  
 app = Flask(__name__) 
 
@@ -156,6 +157,34 @@ def formulario_producto():
     
     return redirect(url_for('productos_index'))
 #----------------------------------------Lógica de Producto/Create
+
+#----------------------------------------Lógica de Eliminación
+
+#--Cliente
+@app.route('/eliminar_cliente/<int:ci>', methods=['GET'])
+def eliminar_cliente(ci):
+   
+    # Lógica para eliminar al cliente de la base de datos
+    query = "DELETE FROM clientes WHERE ci = %s"
+    session.execute(query, (ci,))
+    
+    # Redirigir al panel una vez eliminado
+    return redirect(url_for('panel'))
+
+#--Producto 
+@app.route('/eliminar_producto/<string:product_id>', methods=['GET'])
+def eliminar_producto(product_id):
+    # Convertir el string UUID a un objeto UUID
+    product_uuid = UUID(product_id)
+
+    # Realizar la eliminación del producto en la base de datos utilizando el UUID
+    query = "DELETE FROM productos WHERE id = %s"
+    session.execute(query, (product_uuid,))
+
+    # Redirigir al panel una vez eliminado
+    return redirect(url_for('panel'))
+#----------------------------------------Lógica de Eliminación
+
 
 if __name__ == '__main__':
     app.run(debug=True)
