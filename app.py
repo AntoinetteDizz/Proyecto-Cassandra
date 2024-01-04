@@ -8,28 +8,28 @@ cluster = Cluster(['127.0.0.1'])  # IP de nodo de Cassandra
 session = cluster.connect('supermarket')  # Mi keyspace
 
 
-#----------------------------------------Rutas
-@app.route('/')
-def index():
-    return render_template('login.html')
-
-@app.route('/logout')
-def logout():
-    # Lógica para cerrar sesión
-    return redirect(url_for('index'))
-
-@app.route('/crear_cliente')
-def crear_cliente():
-    return render_template('Clientes/create.html')
-
-@app.route('/crear_factura')
-def crear_factura():
-    return render_template('Facturas/create.html')
-
-@app.route('/crear_producto')
-def crear_producto():
+#----------------------------------------Rutas Estáticas
+@app.route('/') 
+def index(): 
+    return render_template('login.html') 
+ 
+@app.route('/logout') 
+def logout(): 
+    # Lógica para cerrar sesión 
+    return redirect(url_for('index')) 
+ 
+@app.route('/crear_cliente') 
+def crear_cliente(): 
+    return render_template('Clientes/create.html') 
+ 
+@app.route('/crear_factura') 
+def crear_factura(): 
+    return render_template('Facturas/create.html') 
+ 
+@app.route('/crear_producto') 
+def crear_producto(): 
     return render_template('Productos/create.html')
-#----------------------------------------Rutas
+#----------------------------------------Rutas Estáticas
 
 
 #-----------------------------------------Lógica de login
@@ -104,6 +104,58 @@ def facturas_index():
     return render_template('facturas/index.html', bills=bills)
 #----------------------------------------Lógica de Facturas/Index
 
+
+#----------------------------------------Lógica de Clientes/Create
+@app.route('/formulario_cliente', methods=['GET', 'POST'])
+def formulario_cliente():
+    if request.method == 'POST':
+        nombres = request.form['nombres']
+        apellidos = request.form['apellidos']
+        cedula = int(request.form['cedula'])
+        edad = int(request.form['edad'])
+        sexo = request.form['sexo']
+        
+        # Intentar insertar el cliente
+        query_insertar = "INSERT INTO clientes (id, ci, name, last_name, gender, age) VALUES (uuid(), %s, %s, %s, %s, %s)"
+        
+        # Verificar si la cédula ya existe antes de la inserción
+        query_verificar = "SELECT id FROM clientes WHERE ci = %s LIMIT 1"
+        cedula_existente = session.execute(query_verificar, (cedula,)).one()
+        
+        if cedula_existente:
+            return redirect(url_for('clientes_index'))  # Redirige a la página de clientes
+        
+        try:
+            session.execute(query_insertar, (cedula, nombres, apellidos, sexo, edad))
+        except Exception as e:
+            return redirect(url_for('clientes_index'))  # Redirige a la página de clientes
+    
+    return redirect(url_for('clientes_index'))
+#----------------------------------------Lógica de Clientes/Create
+
+
+#----------------------------------------Lógica de Productos/Create
+@app.route('/formulario_producto', methods=['GET', 'POST'])
+def formulario_producto():
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        descripcion = request.form['descripcion']
+        unidades = int(request.form['unidades'])
+        promocion = request.form['promocion'] == "Sí"  # Convertir la cadena a booleano
+        precio = float(request.form['precio'])
+        
+        # Intentar insertar el producto
+        query_insertar = "INSERT INTO productos (id, name, description, stock, promotion, price) VALUES (uuid(), %s, %s, %s, %s, %s)"
+        
+        try:
+            session.execute(query_insertar, (nombre, descripcion, unidades, promocion, precio))
+        except Exception as e:
+            return redirect(url_for('productos_index'))  # Redirige a la página de productos
+        
+        return redirect(url_for('productos_index'))  # Redirige a la página de productos
+    
+    return redirect(url_for('productos_index'))
+#----------------------------------------Lógica de Producto/Create
 
 if __name__ == '__main__':
     app.run(debug=True)
