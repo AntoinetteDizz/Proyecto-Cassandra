@@ -268,6 +268,7 @@ def actualizar_producto():
     return redirect(url_for('panel'))
 #----------------------------------------Lógica de Productos/Edit
 
+
 #----------------------------------------Lógica de Clientes/Botón Busqueda por Cédula
 @app.route('/buscar_cliente', methods=['GET']) 
 def buscar_cliente(): 
