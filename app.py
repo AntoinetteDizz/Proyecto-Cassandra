@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from cassandra.cluster import Cluster 
 from uuid import UUID
+from decimal import Decimal
  
 app = Flask(__name__) 
 
@@ -189,7 +190,7 @@ def eliminar_producto(product_id):
 
 #----------------------------------------Lógica de Clientes/Edit
 
-#--Encontrar la información del cliente y enviarlo al formulario edit.html
+#--Encontrar la información del cliente y enviarla al formulario edit.html
 @app.route('/editar_cliente/<int:ci>', methods=['GET'])
 def editar_cliente(ci):
     query_buscar_cliente = "SELECT * FROM clientes WHERE ci = %s LIMIT 1"
@@ -224,6 +225,48 @@ def actualizar_cliente():
 
     return redirect(url_for('panel'))
 #----------------------------------------Lógica de Clientes/Edit
+
+
+#----------------------------------------Lógica de Productos/Edit
+
+#--Encontrar la información del producto y enviarla al formulario edit.html
+@app.route('/editar_producto/<string:product_id>', methods=['GET'])
+def editar_producto(product_id):
+    id = UUID(product_id)
+
+    query_buscar_producto = "SELECT * FROM productos WHERE id = %s LIMIT 1"
+    producto = session.execute(query_buscar_producto, (id,)).one()
+
+    if producto:
+        # Si se encontró al cliente, enviar sus datos a la plantilla de edición
+        datos_producto = {
+            'id': producto.id,
+            'nombre': producto.name,
+            'descripcion': producto.description,
+            'unidades': producto.stock,
+            'promocion': producto.promotion,
+            'precio': producto.price
+        }
+        return render_template('productos/edit.html', producto=datos_producto)
+    
+    return redirect(url_for('panel'))
+
+#--Editar la información del encontrado producto y actulizar en la base de datos
+@app.route('/actualizar_producto', methods=['POST'])
+def actualizar_producto():
+    id = UUID(request.form['id'])
+    nuevo_nombre = request.form['nombre']
+    nuevo_descripcion = request.form['descripcion']
+    nuevo_unidades = int(request.form['unidades'])
+    nuevo_promocion = request.form['promocion'] == "Sí"  # Convertir la cadena a booleano
+    nueva_precio = Decimal(request.form['precio'])
+
+    # Actualizar la información del producto en la tabla
+    query = "UPDATE productos SET name = %s, description = %s, stock = %s, promotion = %s, price = %s WHERE id = %s"
+    session.execute(query, (nuevo_nombre, nuevo_descripcion, nuevo_unidades, nuevo_promocion, nueva_precio, id))
+
+    return redirect(url_for('panel'))
+#----------------------------------------Lógica de Productos/Edit
 
 
 if __name__ == '__main__':

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Supermarket - Editar Cliente</title>
+    <title>Supermarket - Editar Producto</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -47,9 +47,8 @@
         </div>
     </header>
     
-    <form action="/actualizar_cliente" method="POST">
-        <input type="hidden" name="cedula" value="{{ cliente.cedula }}" />
-        <input type="hidden" name="id" value="{{ cliente.id }}" />
+    <form action="/actualizar_producto" method="POST">
+        <input type="hidden" name="id" value="{{ producto.id }}" />
         <section class="h-100 h-custom gradient-custom-2">
             <div class="container py-5 h-80">
                 <div class="row d-flex justify-content-center align-items-center h-100">
@@ -59,39 +58,45 @@
                                 <div class="row g-0">
 
                                     <div class="p-5">
-                                        <h3 class="fw-normal mb-5" style="color: #4835d4;">Editar Cliente</h3>
-                                      
+                                        <h3 class="fw-normal mb-5" style="color: #4835d4;">Editar Producto</h3>
+
                                         <div class="mb-4 pb-2">
                                             <div class="form-outline">
-                                                <label class="form-label" for="form3Examplev5">Nombres:</label>
-                                                <input type="text" name="nombres" id="form3Examplev5" class="form-control form-control-lg" placeholder="Ej: María Isabel" required value="{{ cliente.nombres }}" />
+                                                <label class="form-label" for="form3Examplev5">Nombre:</label>
+                                                <input type="text" name="nombre" id="form3Examplev5" class="form-control form-control-lg" placeholder="Ej: Cámara digital DSLR Canon EOS Rebel T7i" required value="{{ producto.nombre }}" />
                                             </div>
                                         </div>
                                         
                                         <div class="mb-4 pb-2">
                                             <div class="form-outline">
-                                                <label class="form-label" for="form3Examplev5">Apellidos:</label>
-                                                <input type="text" name="apellidos" id="form3Examplev5" class="form-control form-control-lg" placeholder="Ej: López Sánchez" required value="{{ cliente.apellidos }}" />
+                                                <label class="form-label" for="form3Examplev5">Descripción:</label>
+                                                <input type="text" name="descripcion" id="form3Examplev5" class="form-control form-control-lg" placeholder="Ej: Cámara con Sensor de 24.2 MP, video Full HD, pantalla táctil articulada y..." required value="{{ producto.descripcion }}" />
                                             </div>
                                         </div>
                                         
                                         <div class="mb-4 pb-2">
                                             <div class="form-outline">
-                                                <label class="form-label" for="form3Examplev4">Número:</label>
-                                                <input type="number" name="edad" id="form3Examplev4" class="form-control form-control-lg" placeholder="Ej: 23" required value="{{ cliente.edad }}" />
+                                                <label class="form-label" for="form3Examplev4">Unidades:</label>
+                                                <input type="number" name="unidades" id="form3Examplev4" class="form-control form-control-lg" placeholder="Ej: 30" required value="{{ producto.unidades }}" />
                                             </div>
                                         </div>
                                         
                                         <div class="mb-4 pb-2">
-                                            <label class="form-label" for="form3Examplea4">Sexo:</label>
-                                            <select class="select" name="sexo" required>
-                                                <option value="" selected disabled hidden>Selecciona el Sexo</option>
-                                                <option value="M" {% if cliente.sexo == 'M' %} selected {% endif %}>Masculino</option>
-                                                <option value="F" {% if cliente.sexo == 'F' %} selected {% endif %}>Femenino</option>
+                                            <label class="form-label" for="form3Examplea4">Indique si el producto está en promoción: </label>
+                                            <select class="select" name="promocion" required>
+                                                <option value="" selected disabled hidden>Seleccione una opción</option>
+                                                <option value="Sí" {% if producto.promocion %} selected {% endif %}>Sí</option>
+                                                <option value="No" {% if not producto.promocion %} selected {% endif %}>No</option>
                                             </select>
                                         </div>
-
                                         
+                                        <div class="mb-4 pb-2">
+                                            <div class="form-outline">
+                                                <label class="form-label" for="form3Examplev4">Precio:</label>
+                                                <input type="text" name="precio" id="form3Examplev4" class="form-control form-control-lg" placeholder="Ej: 799.99" step="any" required value="{{ producto.precio }}" />
+                                            </div>
+                                        </div>
+
                                         <div class="row">
 
                                             <button type="submit" class="btn btn-light btn-lg" style="background-color: #02B1F4; color: white;" data-mdb-ripple-color="dark">Registrar</button>
