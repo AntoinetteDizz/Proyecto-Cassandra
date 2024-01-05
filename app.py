@@ -268,6 +268,62 @@ def actualizar_producto():
     return redirect(url_for('panel'))
 #----------------------------------------Lógica de Productos/Edit
 
+#----------------------------------------Lógica de Clientes/Botón Busqueda por Cédula
+@app.route('/buscar_cliente', methods=['GET']) 
+def buscar_cliente(): 
+    cedula = request.args.get('id')  # Obtener la cédula del parámetro GET 
+ 
+    # Realizar la consulta para buscar el cliente por cédula en la base de datos 
+    query = "SELECT * FROM clientes WHERE ci = %s" 
+    cliente_encontrado = session.execute(query, (int(cedula),)).one() 
+ 
+    if cliente_encontrado: 
+        # Si se encuentra el cliente, enviar los datos a la plantilla 
+        cliente = { 
+            'id': cliente_encontrado.id, 
+            'ci': cliente_encontrado.ci, 
+            'name': cliente_encontrado.name, 
+            'last_name': cliente_encontrado.last_name, 
+            'gender': cliente_encontrado.gender, 
+            'age': cliente_encontrado.age 
+        } 
+        return render_template('clientes/index.html', cliente_encontrado=cliente) 
+    else: 
+        # Si no se encuentra, redirigir a una página de cliente no encontrado y mostrar un mensaje 
+        return render_template('clientes/index.html', cliente_encontrado=None) 
+#----------------------------------------Lógica de Clientes/Botón Busqueda por Cédula
+
+
+#----------------------------------------Lógica de Productos/Botón Busqueda por Código
+@app.route('/buscar_producto', methods=['GET']) 
+def buscar_producto(): 
+    codigo_producto = request.args.get('id')  # Obtener el id del parámetro GET
+
+    try:
+        id_producto = UUID(codigo_producto)
+    except ValueError:
+        # Manejar el caso en el que el UUID no sea válido
+        return redirect(url_for('productos_index'))
+
+    query = "SELECT * FROM productos WHERE id = %s" 
+    producto_encontrado = session.execute(query, (id_producto,)).one()
+
+    if producto_encontrado: 
+        # Si se encuentra el producto, enviar los datos a la plantilla 
+        producto = { 
+            'id': producto_encontrado.id,
+            'name': producto_encontrado.name,
+            'description': producto_encontrado.description,
+            'stock': producto_encontrado.stock,
+            'promotion': producto_encontrado.promotion,
+            'price': producto_encontrado.price
+        } 
+        return render_template('productos/index.html', producto_encontrado=producto) 
+    else: 
+        # Si no se encuentra, redirigir a una página de producto no encontrado y mostrar un mensaje 
+        return render_template('productos/index.html', producto_encontrado=None)
+#----------------------------------------Lógica de Productos/Botón Busqueda por Código
+
 
 if __name__ == '__main__':
     app.run(debug=True)

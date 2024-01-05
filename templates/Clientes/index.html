@@ -34,8 +34,8 @@
     </style>
 
     <style>
-        /* Estilos opcionales del buscador*/
-        body {
+   /* Estilos opcionales del buscador*/
+   body {
             /*display: flex;*/
             justify-content: center;
             align-items: center;
@@ -53,6 +53,13 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             background-color: #f9f9f9;
+        }
+        input[type="number"] {
+            width: 300px;
+            margin-bottom: 10px;
+            padding: 10px; /* Aumento del tamaño del padding */
+            border-radius: 5px; /* Bordes más redondeados */
+            border: 1px solid #ccc;
         }
         input[type="text"] {
             width: 300px;
@@ -113,9 +120,9 @@
 
         <h2>Buscar Cliente por Cédula</h2>
 
-        <form action="search.php" method="GET">
+        <form action="/buscar_cliente" method="GET">
             <label for="id">Ingrese la Cédula del Cliente:</label>
-            <input type="text" id="id" name="id" required placeholder="Ej: 12345678">
+            <input type="number" id="id" name="id" required placeholder="Ej: 12345678">
             <button type="submit">Buscar</button>
         </form>
     </section>
@@ -138,20 +145,40 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for client in clients %}
-                    <tr>
-                        <td>{{ client.id }}</td>
-                        <td>{{ client.ci }}</td>
-                        <td>{{ client.name }}</td>
-                        <td>{{ client.last_name }}</td>
-                        <td>{{ client.gender }}</td>
-                        <td>{{ client.age }}</td>
-                        <td>
-                            <a href="{{ url_for('editar_cliente', ci=client.ci) }}">Editar</a>
-                            <a class="text-danger" href="{{ url_for('eliminar_cliente', ci=client.ci) }}">Eliminar</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
+                    <!-- Mostrar el cliente encontrado -->
+                    {% if cliente_encontrado %}
+                        <tr> 
+                            <td>{{ cliente_encontrado.id }}</td> 
+                            <td>{{ cliente_encontrado.ci }}</td> 
+                            <td>{{ cliente_encontrado.name }}</td> 
+                            <td>{{ cliente_encontrado.last_name }}</td> 
+                            <td>{{ cliente_encontrado.gender }}</td> 
+                            <td>{{ cliente_encontrado.age }}</td>
+                            <td>
+                                <a href="{{ url_for('editar_cliente', ci=cliente_encontrado.ci) }}">Editar</a>
+                                <a class="text-danger" href="{{ url_for('eliminar_cliente', ci=cliente_encontrado.ci) }}">Eliminar</a>
+                            </td>
+                        </tr> 
+                    {% elif clients %}
+                        <!-- Mostrar lista de clientes -->
+                        {% for client in clients %}
+                        <tr>
+                            <td>{{ client.id }}</td>
+                            <td>{{ client.ci }}</td>
+                            <td>{{ client.name }}</td>
+                            <td>{{ client.last_name }}</td>
+                            <td>{{ client.gender }}</td>
+                            <td>{{ client.age }}</td>
+                            <td>
+                                <a href="{{ url_for('editar_cliente', ci=client.ci) }}">Editar</a>
+                                <a class="text-danger" href="{{ url_for('eliminar_cliente', ci=client.ci) }}">Eliminar</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <!-- Mostrar mensaje de Error-->
+                        <td colspan="7">Cliente no encontrado</td>
+                    {% endif %}           
                 </tbody>
                 </table>
             </div>

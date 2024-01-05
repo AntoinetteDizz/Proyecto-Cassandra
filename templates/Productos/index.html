@@ -113,7 +113,7 @@
 
         <h2>Buscar Producto por Código</h2>
 
-        <form action="search.php" method="GET">
+        <form action="/buscar_producto" method="GET">
             <label for="id">Ingrese Código del Producto:</label>
             <input type="text" id="id" name="id" required placeholder="Ej: 507cef29-7cce-4e60-ab3e-38">
             <button type="submit">Buscar</button>
@@ -138,20 +138,40 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for product in products %}
-                    <tr>
-                        <td>{{ product.id }}</td>
-                        <td>{{ product.name }}</td>
-                        <td>{{ product.description }}</td>
-                        <td>{{ product.stock }}</td>
-                        <td>{{ product.promotion }}</td>
-                        <td>{{ product.price }}</td>
-                        <td>
-                            <a href="{{ url_for('editar_producto', product_id=product.id) }}">Editar</a>
-                            <a class="text-danger" href="{{ url_for('eliminar_producto', product_id=product.id) }}">Eliminar</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
+                 <!-- Mostrar el prodcuto encontrado -->
+                 {% if producto_encontrado %}
+                 <tr> 
+                     <td>{{ producto_encontrado.id }}</td> 
+                     <td>{{ producto_encontrado.name }}</td> 
+                     <td>{{ producto_encontrado.description }}</td> 
+                     <td>{{ producto_encontrado.stock }}</td> 
+                     <td>{{ producto_encontrado.promotion }}</td>
+                     <td>{{ producto_encontrado.price }}</td>
+                     <td>
+                         <a href="{{ url_for('editar_producto', product_id=producto_encontrado.id) }}">Editar</a>
+                         <a class="text-danger" href="{{ url_for('eliminar_producto', product_id=producto_encontrado.id) }}">Eliminar</a>
+                     </td>
+                 </tr> 
+             {% elif products %}
+                 <!-- Mostrar lista de products -->
+                 {% for product in products %}
+                 <tr>
+                     <td>{{ product.id }}</td>
+                     <td>{{ product.name }}</td>
+                     <td>{{ product.description }}</td>
+                     <td>{{ product.stock }}</td>
+                     <td>{{ product.promotion }}</td>
+                     <td>{{ product.price }}</td>
+                     <td>
+                         <a href="{{ url_for('editar_producto', product_id=product.id) }}">Editar</a>
+                         <a class="text-danger" href="{{ url_for('eliminar_producto', product_id=product.id) }}">Eliminar</a>
+                     </td>
+                 </tr>
+                 {% endfor %}
+             {% else %}
+                 <!-- Mostrar mensaje de Error-->
+                 <td colspan="8">Producto no encontrado</td>
+             {% endif %}
                 </tbody>
                 </table>
             </div>
