@@ -156,7 +156,8 @@ def formulario_producto():
         return redirect(url_for('productos_index'))  # Redirige a la página de productos
     
     return redirect(url_for('productos_index'))
-#----------------------------------------Lógica de Producto/Create
+#----------------------------------------Lógica de Productos/Create
+
 
 #----------------------------------------Lógica de Eliminación
 
@@ -184,6 +185,45 @@ def eliminar_producto(product_id):
     # Redirigir al panel una vez eliminado
     return redirect(url_for('panel'))
 #----------------------------------------Lógica de Eliminación
+
+
+#----------------------------------------Lógica de Clientes/Edit
+
+#--Encontrar la información del cliente y enviarlo al formulario edit.html
+@app.route('/editar_cliente/<int:ci>', methods=['GET'])
+def editar_cliente(ci):
+    query_buscar_cliente = "SELECT * FROM clientes WHERE ci = %s LIMIT 1"
+    cliente = session.execute(query_buscar_cliente, (ci,)).one()
+
+    if cliente:
+        # Si se encontró al cliente, enviar sus datos a la plantilla de edición
+        datos_cliente = {
+            'id': cliente.id,
+            'nombres': cliente.name,
+            'apellidos': cliente.last_name,
+            'cedula': cliente.ci,
+            'edad': cliente.age,
+            'sexo': cliente.gender
+        }
+        return render_template('clientes/edit.html', cliente=datos_cliente)
+    
+    return redirect(url_for('panel'))
+
+#--Editar la información del encontrado cliente y actulizar en la base de datos
+@app.route('/actualizar_cliente', methods=['POST'])
+def actualizar_cliente():
+    id = UUID(request.form['id'])
+    cedula = int(request.form['cedula'])
+    nuevo_nombre = request.form['nombres']
+    nuevo_apellido = request.form['apellidos']
+    nuevo_genero = request.form['sexo']
+    nueva_edad = int(request.form['edad'])
+
+    query = "UPDATE clientes SET name = %s, last_name = %s, gender = %s, age = %s WHERE ci = %s AND id = %s"
+    session.execute(query, (nuevo_nombre, nuevo_apellido, nuevo_genero, nueva_edad, cedula, id))
+
+    return redirect(url_for('panel'))
+#----------------------------------------Lógica de Clientes/Edit
 
 
 if __name__ == '__main__':

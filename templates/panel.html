@@ -75,6 +75,7 @@
                 <table>
                     <thead>
                     <tr>
+                        <th>Código</th>
                         <th>Cédula</th>
                         <th>Nombre</th>
                         <th>Apellidos</th>
@@ -86,13 +87,14 @@
                 <tbody>
                     {% for client in clients %}
                     <tr>
+                        <td>{{ client.id }}</td>
                         <td>{{ client.ci }}</td>
                         <td>{{ client.name }}</td>
                         <td>{{ client.last_name }}</td>
                         <td>{{ client.gender }}</td>
                         <td>{{ client.age }}</td>
                         <td>
-                            <a href="">Editar</a>
+                            <a href="{{ url_for('editar_cliente', ci=client.ci) }}">Editar</a>
                             <a class="text-danger" href="{{ url_for('eliminar_cliente', ci=client.ci) }}">Eliminar</a>
                         </td>
                     </tr>
