@@ -178,7 +178,7 @@ def formulario_factura():
         try:
             id_producto = UUID(request.form['id_producto'])
         except ValueError:
-            #--Manejar el caso en el que el UUID no sea válido
+            # Manejar el caso en el que el UUID no sea válido
             error_message = "El ID del producto no es válido - Intente nuevamente"
             return render_template('Facturas/create.html', error_message=error_message)
         
@@ -327,6 +327,38 @@ def actualizar_producto():
 #----------------------------------------Lógica de Productos/Edit
 
 
+#----------------------------------------Lógica de Facturas/Detalles
+
+#--Encontrar la información de la factura
+@app.route('/detalles_factura/<string:bill_id>', methods=['GET'])
+def detalles_factura(bill_id):
+
+    # Convertir el string UUID a un objeto UUID
+    id_factura = UUID(bill_id)
+
+    # Consultar la información de la factura
+    query_factura = "SELECT * FROM supermarket.factura WHERE id = %s"
+    factura = session.execute(query_factura, (id_factura,)).one()
+
+    if factura:
+        # Si se encuentra la factura, obtener detalles del cliente y producto asociados
+        ci_cliente = factura.ci_cliente
+        id_producto = factura.id_producto
+
+        # Consultar la información del cliente
+        query_cliente = "SELECT * FROM clientes WHERE ci = %s"
+        cliente = session.execute(query_cliente, (ci_cliente,)).one()
+
+        # Consultar la información del producto
+        query_producto = "SELECT * FROM supermarket.productos WHERE id = %s"
+        producto = session.execute(query_producto, (id_producto,)).one()
+
+        return render_template('facturas/search.html', factura=factura, cliente=cliente, producto=producto)
+    else:
+        return redirect(url_for('facturas_index'))
+#----------------------------------------Lógica de Facturas/Detalles
+
+
 #----------------------------------------Lógica de Clientes/Botón Busqueda por Cédula
 @app.route('/buscar_cliente', methods=['GET']) 
 def buscar_cliente(): 
@@ -382,6 +414,39 @@ def buscar_producto():
         # Si no se encuentra, redirigir a una página de producto no encontrado y mostrar un mensaje 
         return render_template('productos/index.html', producto_encontrado=None)
 #----------------------------------------Lógica de Productos/Botón Busqueda por Código
+
+
+#----------------------------------------Lógica de Facturas/Botón Busqueda por Código
+@app.route('/buscar_factura', methods=['GET'])
+def buscar_factura():
+
+    codigo_factura = request.args.get('id')
+
+    # Convertir el string UUID a un objeto UUID
+    try:
+        id_factura = UUID(codigo_factura)
+    except ValueError:
+        # Manejar el caso en el que el UUID no sea válido
+        return redirect(url_for('facturas_index'))
+    
+    query = "SELECT * FROM factura WHERE id = %s"
+    factura_encontrado = session.execute(query, (id_factura,)).one()
+
+    if factura_encontrado: 
+        # Si se encuentra el producto, enviar los datos a la plantilla 
+        factura = { 
+            'id': factura_encontrado.id,
+            'ci_cliente' : factura_encontrado.ci_cliente,
+            'id_producto' : factura_encontrado.id_producto,
+            'amount' : factura_encontrado.amount,
+            'date' : factura_encontrado.date,
+            'payment_method' : factura_encontrado.payment_method
+        } 
+        return render_template('facturas/index.html', factura_encontrado=factura) 
+    else: 
+        # Si no se encuentra, redirigir a una página de factura no encontrada y mostrar un mensaje 
+        return render_template('facturas/index.html', factura_encontrado=None)
+#----------------------------------------Lógica de Facturas/Botón Busqueda por Código
 
 
 if __name__ == '__main__':

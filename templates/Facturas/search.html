@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supermarket - Panel de Inicio</title>
+    <title>Supermarket - Panel de Facturas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
@@ -30,6 +30,47 @@
         }
         th {
           background-color: #f2f2f2;
+        }
+    </style>
+
+    <style>
+        /* Estilos opcionales del buscador*/
+        body {
+            /*display: flex;*/
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        section {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        input[type="text"] {
+            width: 300px;
+            margin-bottom: 10px;
+            padding: 10px; /* Aumento del tamaño del padding */
+            border-radius: 5px; /* Bordes más redondeados */
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
         }
     </style>
 
@@ -70,10 +111,23 @@
 
     <br>
 
+    <section>
+
+        <h2>Buscar por Código de Factura</h2>
+
+        <form action="/buscar_factura" method="GET">
+            <label for="id">Ingrese el código de la Factura:</label>
+            <input type="text" id="id" name="id" required placeholder="Ej: 49809a51-6d58-4f62-acff-f8">
+            <button type="submit">Buscar</button>
+        </form>
+    </section>
+
+    <br>
+
     <section class="socios container">
         <div class="row">
             <div class="col">
-                <h2>Facturas</h2>
+                <h2>Información de la Factura</h2>
                 <table>
                     <thead>
                     <tr>
@@ -83,36 +137,33 @@
                         <th>Monto Cancelado/Bs</th>
                         <th>Fecha</th>
                         <th>Método de Pago</th>
-                        <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for bill in bills %}
-                    <tr>
-                        <td>{{ bill.id }}</td>
-                        <td>{{ bill.ci_cliente }}</td>
-                        <td>{{ bill.id_producto }}</td>
-                        <td>{{ bill.amount }}</td>
-                        <td>{{ bill.date }}</td>
-                        <td>{{ bill.payment_method }}</td>
-                        <td>
-                            <a href="{{ url_for('detalles_factura', bill_id=bill.id) }}">Detalles</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                    </tr>
+                    {% if factura %}
+                        <tr>  
+                            <td>{{ factura.id }}</td>
+                            <td>{{ factura.ci_cliente }}</td>
+                            <td>{{ factura.id_producto }}</td>
+                            <td>{{ factura.amount }}</td>
+                            <td>{{ factura.date }}</td>
+                            <td>{{ factura.payment_method }}</td>
+                        </tr> 
+                    {% else %}
+                        <!-- Mostrar mensaje de Error-->
+                        <td colspan="6">Factura no encontrada</td>
+                    {% endif %}
                 </tbody>
                 </table>
             </div>
         </div>
     </section>
     
-    <br>
 
     <section class="socios container">
         <div class="row">
             <div class="col">
-                <h2>Clientes</h2>
+                <h2>Información del Cliente</h2>
                 <table>
                     <thead>
                     <tr>
@@ -121,23 +172,21 @@
                         <th>Apellidos</th>
                         <th>Sexo</th>
                         <th>Edad</th>
-                        <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for client in clients %}
-                    <tr>
-                        <td>{{ client.ci }}</td>
-                        <td>{{ client.name }}</td>
-                        <td>{{ client.last_name }}</td>
-                        <td>{{ client.gender }}</td>
-                        <td>{{ client.age }}</td>
-                        <td>
-                            <a href="{{ url_for('editar_cliente', ci=client.ci) }}">Editar</a>
-                            <a class="text-danger" href="{{ url_for('eliminar_cliente', ci=client.ci) }}">Eliminar</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
+                    {% if cliente %}
+                        <tr>  
+                            <td>{{ cliente.ci }}</td> 
+                            <td>{{ cliente.name }}</td> 
+                            <td>{{ cliente.last_name }}</td> 
+                            <td>{{ cliente.gender }}</td> 
+                            <td>{{ cliente.age }}</td>
+                        </tr> 
+                    {% else %}
+                        <!-- Mostrar mensaje de Error-->
+                        <td colspan="5">Cliente no encontrado</td>
+                    {% endif %} 
                 </tbody>
                 </table>
             </div>
@@ -149,7 +198,7 @@
     <section class="accesos container">
         <div class="row">
             <div class="col">
-                <h2>Productos</h2>
+                <h2>Información del Producto</h2>
                 <table>
                     <thead>
                     <tr>
@@ -159,29 +208,29 @@
                         <th>Unidades</th>
                         <th>Promoción</th>
                         <th>Precio/Bs</th>
-                        <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for product in products %}
-                    <tr>
-                        <td>{{ product.id }}</td>
-                        <td>{{ product.name }}</td>
-                        <td>{{ product.description }}</td>
-                        <td>{{ product.stock }}</td>
-                        <td>{{ product.promotion }}</td>
-                        <td>{{ product.price }}</td>
-                        <td>
-                            <a href="{{ url_for('editar_producto', product_id=product.id) }}">Editar</a>
-                            <a class="text-danger" href="{{ url_for('eliminar_producto', product_id=product.id) }}">Eliminar</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
+                    {% if producto %}
+                        <tr> 
+                            <td>{{ producto.id }}</td> 
+                            <td>{{ producto.name }}</td> 
+                            <td>{{ producto.description }}</td> 
+                            <td>{{ producto.stock }}</td> 
+                            <td>{{ producto.promotion }}</td>
+                            <td>{{ producto.price }}</td>
+                        </tr> 
+                    {% else %}
+                        <!-- Mostrar mensaje de Error-->
+                        <td colspan="6">Producto no encontrado</td>
+                    {% endif %}
                 </tbody>
                 </table>
             </div>
         </div>
     </section>
+
+    <br>
 
     <div class="mb-5"></div>
 
