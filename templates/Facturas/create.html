@@ -1,79 +1,17 @@
 <!doctype html>
-
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Supermarket - Crear Factura</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
-
-    <style>
-        /* Estilos opcionales para la tabla */
-        .socios {
-          padding: 20px;
-        }
-        /*.container {
-          max-width: 800px;
-          margin: 0 auto;
-        }*/
-        table {
-          border-collapse: collapse;
-          width: 100%;
-        }
-        th, td {
-          border: 1px solid black;
-          padding: 8px;
-          text-align: left;
-        }
-        th {
-          background-color: #f2f2f2;
-        }
-    </style>
-
-    <style>
-        /* Estilos opcionales del buscador*/
-        body {
-            /*display: flex;*/
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        section {
-            text-align: center;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
-        input[type="text"] {
-            width: 300px;
-            margin-bottom: 10px;
-            padding: 10px; /* Aumento del tamaño del padding */
-            border-radius: 5px; /* Bordes más redondeados */
-            border: 1px solid #ccc;
-        }
-        button {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 4px;
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
-
 </head>
 
 <body>
@@ -87,11 +25,11 @@
             <!-- Enlace simulacro para el logo -->
             <a href="{{ url_for('panel') }}" class="logo">SUPERMARKET</a>
 
-            <input type="checkbox" id="menu"/>
+            <input type="" id="menu"/>
 
             <!-- Referencia al menú -->
             <label for="menu">
-                <img src="" class="menu-icono" alt="menu">
+                <img src="Imagenes/menu.png" class="menu-icono" alt="menu">
             </label>
 
             <!-- Navegación -->
@@ -108,49 +46,79 @@
             </nav>
         </div>
     </header>
-
-    <br>
-
-    <section>
-
-        <h2>Crear Factura</h2>
-
-        <br>
-
-        <form action="" method="GET">
-            <label for="id">Ingrese la Cédula del Cliente:</label>
-            <input type="text" id="id" name="ci" required placeholder="Ej: 12345678">
-            
-            <br>
-
-            <label class="form-label" for="form3Examplev5">Ingrese Día/Mes/Año:</label>
-            <input type="text" name="date" id="form3Examplev4" placeholder="Ej: 22/12/2024" required/>
-
-            <br>
-
-            <label class="form-label" for="form3Examplea4">Método de Pago: </label>
-            <select class="select" name="payment_method" required>
-                <option value="" selected disabled hidden>Selecciona un Método de Pago</option>
-                <option value="">Débito</option>
-                <option value="">Crédito</option>
-                <option value="">Efectivo</option>
-            </select>
-            
-            <br>
-
-            <button type="submit">Buscar</button>
-        </form>
-    </section>
     
+    <form action="/formulario_factura" method="POST">
+        <section class="h-100 h-custom gradient-custom-2">
+            <div class="container py-5 h-80">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12">
+                        <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                            <div class="card-body p-0">
+                                <div class="row g-0">
+
+                                    <div class="p-5">
+                                        <h3 class="fw-normal mb-5" style="color: #4835d4;">Agregar Factura</h3>
+                                        
+                                        <div class="mb-4 pb-2">
+                                            <div class="form-outline">
+                                                <label class="form-label" for="form3Examplev4">Cédula:</label>
+                                                <input type="number" name="ci_cliente" id="form3Examplev4" class="form-control form-control-lg" placeholder="Ej: 1234567" required />
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-4 pb-2">
+                                            <div class="form-outline">
+                                                <label class="form-label" for="form3Examplev4">Código del Producto:</label>
+                                                <input type="text" name="id_producto" id="form3Examplev4" class="form-control form-control-lg" placeholder="Ej: 550e8400-e29b-41d4-a716-446655440000" required />
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-4 pb-2">
+                                            <div class="form-outline">
+                                                <label class="form-label" for="form3Examplev5">Ingrese Día-Mes-Año</label>
+                                                <input type="text" name="fecha" id="form3Examplev4"
+                                                class="form-control form-control-lg" placeholder="Ej: 22-12-2024" required/>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-4 pb-2">
+                                            <label class="form-label" for="form3Examplea4">Método de Pago: </label>
+                                            <select class="select" name="metodo_pago" required>
+                                                <option value="" selected disabled hidden>Selecciona el Método de Pago</option>
+                                                <option value="Debito">Débito</option>
+                                                <option value="Credito">Crédito</option>
+                                                <option value="Efectivo">Efectivo</option>
+                                            </select>
+                                        </div>
+                                        
+                                        {% if error_message %}
+                                            <div class="error-message">
+                                                {{ error_message }}
+                                            </div>
+                                        {% endif %}
+
+                                        <div class="row">
+
+                                            <button type="submit" class="btn btn-light btn-lg" style="background-color: #02B1F4; color: white;" data-mdb-ripple-color="dark">Registrar</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </section>
+    </form>
     
-    <div class="mb-5"></div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-
-    <script>
-        function myFunction(){
-            window.location.href="http://localhost/pagina"
-        }
+    </footer>
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
     </script>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+    </script>
 </body>
+</html>

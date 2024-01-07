@@ -68,6 +68,41 @@
         </div>
     </header>
 
+    <br>
+
+    <section class="socios container">
+        <div class="row">
+            <div class="col">
+                <h2>Facturas</h2>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Cédula del Cliente</th>
+                        <th>Monto Cancelado/Bs</th>
+                        <th>Fecha</th>
+                        <th>Método de Pago</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for bill in bills %}
+                    <tr>
+                        <td>{{ bill.id }}</td>
+                        <td>{{ bill.ci_cliente }}</td>
+                        <td>{{ bill.amount }}</td>
+                        <td>{{ bill.date }}</td>
+                        <td>{{ bill.payment_method }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    
+    <br>
+
     <section class="socios container">
         <div class="row">
             <div class="col">
@@ -75,7 +110,6 @@
                 <table>
                     <thead>
                     <tr>
-                        <th>Código</th>
                         <th>Cédula</th>
                         <th>Nombre</th>
                         <th>Apellidos</th>
@@ -87,7 +121,6 @@
                 <tbody>
                     {% for client in clients %}
                     <tr>
-                        <td>{{ client.id }}</td>
                         <td>{{ client.ci }}</td>
                         <td>{{ client.name }}</td>
                         <td>{{ client.last_name }}</td>
@@ -104,7 +137,10 @@
             </div>
         </div>
     </section>
-<section class="accesos container">
+
+    <br>
+
+    <section class="accesos container">
         <div class="row">
             <div class="col">
                 <h2>Productos</h2>

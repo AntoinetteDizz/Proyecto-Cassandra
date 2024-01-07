@@ -66,9 +66,10 @@ def panel():
     # Realizar consulta a la base de datos Cassandra
     clients = session.execute("SELECT * FROM clientes")
     products = session.execute("SELECT * FROM productos")
+    bills = session.execute("SELECT * FROM factura")
 
     # Mostrar resultados en una plantilla HTML
-    return render_template('panel.html', clients=clients, products=products)
+    return render_template('panel.html', clients=clients, products=products, bills=bills)
 
 #----------------------------------------Lógica de Panel Principal
 
@@ -158,6 +159,63 @@ def formulario_producto():
     
     return redirect(url_for('productos_index'))
 #----------------------------------------Lógica de Productos/Create
+
+
+#----------------------------------------Lógica de Facturas/Create
+@app.route('/formulario_factura', methods=['GET', 'POST'])
+def formulario_factura():
+    if request.method == 'POST':
+
+        # Mensaje de error
+        error_message = None
+
+        # Datos del formulario
+        ci_cliente = int(request.form['ci_cliente'])
+        fecha = request.form['fecha']
+        metodo_pago = request.form['metodo_pago']
+
+        # Verificar si la estructura del código UUID es valida
+        try:
+            id_producto = UUID(request.form['id_producto'])
+        except ValueError:
+            #--Manejar el caso en el que el UUID no sea válido
+            error_message = "El ID del producto no es válido - Intente nuevamente"
+            return render_template('Facturas/create.html', error_message=error_message)
+        
+        # Verificar si la cédula del cliente existe en la tabla clientes
+        query_cliente = "SELECT * FROM clientes WHERE ci = %s"
+        cliente = session.execute(query_cliente, (ci_cliente,)).one()
+
+        # Verificar si el ID del producto existe en la tabla productos
+        query_producto = "SELECT * FROM productos WHERE id = %s"
+        producto = session.execute(query_producto, (id_producto,)).one()
+        
+        # Validar existencia del cliente y producto
+        if not cliente:
+            error_message = "El cliente no existe - Intente nuevamente"
+            return render_template('Facturas/create.html', error_message=error_message)
+        elif not producto:
+            error_message = "El producto no existe - Intente nuevamente"
+            return render_template('Facturas/create.html', error_message=error_message)
+        
+        # Verificar si hay stock de producto
+        if producto.stock == 0:
+            error_message = "El producto está agotado - Intente nuevamente"
+            return render_template('Facturas/create.html', error_message=error_message)
+        else:
+            # Actualizar el stock y agregar la factura a la tabla
+            nuevo_stock = producto.stock - 1
+            query_update_stock = "UPDATE productos SET stock = %s WHERE id = %s"
+            session.execute(query_update_stock, (nuevo_stock, id_producto))
+
+            # Guardar los datos en la factura en la tabla
+            query_insert_factura = "INSERT INTO supermarket.factura (id, ci_cliente, amount, date, payment_method, id_producto) VALUES (uuid(), %s, %s, %s, %s, %s)"
+            session.execute(query_insert_factura, (ci_cliente, producto.price, fecha, metodo_pago, id_producto))
+
+            return redirect(url_for('panel'))
+    
+    return redirect(url_for('facturas_index'))
+#----------------------------------------Lógica de Facturas/Create
 
 
 #----------------------------------------Lógica de Eliminación

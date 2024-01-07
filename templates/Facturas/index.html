@@ -109,16 +109,20 @@
         </div>
     </header>
 
+    <br>
+
     <section>
 
         <h2>Buscar por Código de Factura</h2>
 
-        <form action="search.php" method="GET">
+        <form action="" method="GET">
             <label for="id">Ingrese el código de la Factura:</label>
             <input type="text" id="id" name="id" required placeholder="Ej: 49809a51-6d58-4f62-acff-f8">
             <button type="submit">Buscar</button>
         </form>
     </section>
+
+    <br>
 
     <section class="socios container">
         <div class="row">
@@ -130,10 +134,10 @@
                     <tr>
                         <th>Código</th>
                         <th>Cédula del Cliente</th>
+                        <th>Código de Producto</th>
                         <th>Monto Cancelado/Bs</th>
                         <th>Fecha</th>
                         <th>Método de Pago</th>
-                        <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -141,14 +145,10 @@
                     <tr>
                         <td>{{ bill.id }}</td>
                         <td>{{ bill.ci_cliente }}</td>
+                        <td>{{ bill.id_producto }}</td>
                         <td>{{ bill.amount }}</td>
                         <td>{{ bill.date }}</td>
                         <td>{{ bill.payment_method }}</td>
-                        <td>
-                            <a href="">Detalles</a>
-                            <a href="">Editar</a>
-                            <a class="text-danger" href="">Eliminar</a>
-                        </td>
                     </tr>
                     {% endfor %}
                     </tr>

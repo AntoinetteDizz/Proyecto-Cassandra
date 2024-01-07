@@ -116,6 +116,8 @@
         </div>
     </header>
 
+    <br>
+
     <section>
 
         <h2>Buscar Cliente por Cédula</h2>
@@ -127,6 +129,8 @@
         </form>
     </section>
 
+    <br>
+
     <section class="socios container">
         <div class="row">
             <div class="col">
@@ -135,7 +139,6 @@
                 <table>
                     <thead>
                     <tr>
-                        <th>Código</th>
                         <th>Cédula</th>
                         <th>Nombre</th>
                         <th>Apellidos</th>
@@ -147,8 +150,7 @@
                 <tbody>
                     <!-- Mostrar el cliente encontrado -->
                     {% if cliente_encontrado %}
-                        <tr> 
-                            <td>{{ cliente_encontrado.id }}</td> 
+                        <tr>  
                             <td>{{ cliente_encontrado.ci }}</td> 
                             <td>{{ cliente_encontrado.name }}</td> 
                             <td>{{ cliente_encontrado.last_name }}</td> 
@@ -163,7 +165,6 @@
                         <!-- Mostrar lista de clientes -->
                         {% for client in clients %}
                         <tr>
-                            <td>{{ client.id }}</td>
                             <td>{{ client.ci }}</td>
                             <td>{{ client.name }}</td>
                             <td>{{ client.last_name }}</td>

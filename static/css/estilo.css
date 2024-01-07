@@ -246,3 +246,9 @@ img {
 .text-danger {
 	color: red;
 }
+
+.error-message {
+    text-align: center;
+    font-size: 20px;
+    color: red;
+}
