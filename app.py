@@ -353,7 +353,7 @@ def detalles_factura(bill_id):
         query_producto = "SELECT * FROM supermarket.productos WHERE id = %s"
         producto = session.execute(query_producto, (id_producto,)).one()
 
-        return render_template('facturas/search.html', factura=factura, cliente=cliente, producto=producto)
+        return render_template('facturas/details.html', factura=factura, cliente=cliente, producto=producto)
     else:
         return redirect(url_for('facturas_index'))
 #----------------------------------------Lógica de Facturas/Detalles
@@ -447,6 +447,22 @@ def buscar_factura():
         # Si no se encuentra, redirigir a una página de factura no encontrada y mostrar un mensaje 
         return render_template('facturas/index.html', factura_encontrado=None)
 #----------------------------------------Lógica de Facturas/Botón Busqueda por Código
+
+
+#----------------------------------------Lógica de Facturas/Botón Busqueda por Cédula
+@app.route('/buscar_factura_cedula', methods=['GET'])
+def buscar_factura_cedula():
+
+    cedula = int(request.args.get('id'))  # Obtener la cédula del parámetro GET
+
+    #Consulta a la base de datos Cassandra
+    query = "SELECT * FROM supermarket.factura WHERE ci_cliente = %s ALLOW FILTERING"
+    result = session.execute(query, (cedula,))
+    
+    bills = list(result)
+
+    return render_template('facturas/index.html', bills=bills)
+#----------------------------------------Lógica de Facturas/Botón Busqueda por Cédula
 
 
 if __name__ == '__main__':

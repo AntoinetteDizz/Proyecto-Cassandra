@@ -54,6 +54,13 @@
             border-radius: 5px;
             background-color: #f9f9f9;
         }
+        input[type="number"] {
+            width: 300px;
+            margin-bottom: 10px;
+            padding: 10px; /* Aumento del tamaño del padding */
+            border-radius: 5px; /* Bordes más redondeados */
+            border: 1px solid #ccc;
+        }
         input[type="text"] {
             width: 300px;
             margin-bottom: 10px;
@@ -113,11 +120,24 @@
 
     <section>
 
-        <h2>Buscar por Código de Factura</h2>
+        <h2>Buscar Factura por Código</h2>
 
         <form action="/buscar_factura" method="GET">
             <label for="id">Ingrese el código de la Factura:</label>
             <input type="text" id="id" name="id" required placeholder="Ej: 49809a51-6d58-4f62-acff-f8">
+            <button type="submit">Buscar</button>
+        </form>
+    </section>
+
+    <br>
+
+    <section>
+
+        <h2>Buscar Factura por Cédula</h2>
+
+        <form action="/buscar_factura_cedula" method="GET">
+            <label for="id">Ingrese la Cédula del Cliente:</label>
+            <input type="number" id="id" name="id" required placeholder="Ej: 12345678">
             <button type="submit">Buscar</button>
         </form>
     </section>
