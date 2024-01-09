@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supermarket - Panel de Facturas</title>
+    <title>Supermarket - Detalles de Factura</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
@@ -53,6 +53,12 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             background-color: #f9f9f9;
+        }input[type="number"] {
+            width: 300px;
+            margin-bottom: 10px;
+            padding: 10px; /* Aumento del tamaño del padding */
+            border-radius: 5px; /* Bordes más redondeados */
+            border: 1px solid #ccc;
         }
         input[type="text"] {
             width: 300px;
@@ -113,11 +119,24 @@
 
     <section>
 
-        <h2>Buscar por Código de Factura</h2>
+        <h2>Buscar Factura por Código</h2>
 
         <form action="/buscar_factura" method="GET">
             <label for="id">Ingrese el código de la Factura:</label>
             <input type="text" id="id" name="id" required placeholder="Ej: 49809a51-6d58-4f62-acff-f8">
+            <button type="submit">Buscar</button>
+        </form>
+    </section>
+
+    <br>
+
+    <section>
+
+        <h2>Buscar Factura por Cédula</h2>
+
+        <form action="/buscar_factura_cedula" method="GET">
+            <label for="id">Ingrese la Cédula del Cliente:</label>
+            <input type="number" id="id" name="id" required placeholder="Ej: 12345678">
             <button type="submit">Buscar</button>
         </form>
     </section>
@@ -130,30 +149,23 @@
                 <h2>Información de la Factura</h2>
                 <table>
                     <thead>
-                    <tr>
-                        <th>Código</th>
-                        <th>Cédula del Cliente</th>
-                        <th>Código de Producto</th>
-                        <th>Monto Cancelado/Bs</th>
-                        <th>Fecha</th>
-                        <th>Método de Pago</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if factura %}
-                        <tr>  
-                            <td>{{ factura.id }}</td>
-                            <td>{{ factura.ci_cliente }}</td>
-                            <td>{{ factura.id_producto }}</td>
-                            <td>{{ factura.amount }}</td>
-                            <td>{{ factura.date }}</td>
-                            <td>{{ factura.payment_method }}</td>
-                        </tr> 
-                    {% else %}
-                        <!-- Mostrar mensaje de Error-->
-                        <td colspan="6">Factura no encontrada</td>
-                    {% endif %}
-                </tbody>
+                        <tr>
+                            <th>Código</th>
+                            <th>Cédula del Cliente</th>
+                            <th>Código de Producto</th>
+                            <th>Monto Cancelado/Bs</th>
+                            <th>Fecha</th>
+                            <th>Método de Pago</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <td>{{ factura.id }}</td>
+                        <td>{{ factura.ci_cliente }}</td>
+                        <td>{{ factura.id_producto }}</td>
+                        <td>{{ factura.amount }}</td>
+                        <td>{{ factura.date }}</td>
+                        <td>{{ factura.payment_method }}</td>
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -166,28 +178,17 @@
                 <h2>Información del Cliente</h2>
                 <table>
                     <thead>
-                    <tr>
-                        <th>Cédula</th>
-                        <th>Nombre</th>
-                        <th>Apellidos</th>
-                        <th>Sexo</th>
-                        <th>Edad</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if cliente %}
-                        <tr>  
-                            <td>{{ cliente.ci }}</td> 
-                            <td>{{ cliente.name }}</td> 
-                            <td>{{ cliente.last_name }}</td> 
-                            <td>{{ cliente.gender }}</td> 
-                            <td>{{ cliente.age }}</td>
-                        </tr> 
-                    {% else %}
-                        <!-- Mostrar mensaje de Error-->
-                        <td colspan="5">Cliente no encontrado</td>
-                    {% endif %} 
-                </tbody>
+                        <tr>
+                            <th>Cédula</th>
+                            <th>Nombre</th>
+                            <th>Apellidos</th>
+                            </tr>
+                        </thead>
+                    <tbody>
+                        <td>{{ factura.ci_cliente }}</td> 
+                        <td>{{ factura.name_cliente }}</td> 
+                        <td>{{ factura.last_name_cliente }}</td>
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -201,30 +202,23 @@
                 <h2>Información del Producto</h2>
                 <table>
                     <thead>
-                    <tr>
-                        <th>Código</th>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th>Unidades Actuales</th>
-                        <th>Promoción Actual</th>
-                        <th>Precio/Bs Actual</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if producto %}
+                        <tr>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Promoción - Historico</th>
+                            <th>Precio/Bs - Historico</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         <tr> 
-                            <td>{{ producto.id }}</td> 
-                            <td>{{ producto.name }}</td> 
-                            <td>{{ producto.description }}</td> 
-                            <td>{{ producto.stock }}</td> 
-                            <td>{{ producto.promotion }}</td>
-                            <td>{{ producto.price }}</td>
-                        </tr> 
-                    {% else %}
-                        <!-- Mostrar mensaje de Error-->
-                        <td colspan="6">Producto no encontrado</td>
-                    {% endif %}
-                </tbody>
+                            <td>{{ factura.id_producto}}</td> 
+                            <td>{{ factura.name_producto }}</td> 
+                            <td>{{ factura.description_producto }}</td>
+                            <td>{{ factura.promotion_producto }}</td>
+                            <td>{{ factura.amount }}</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>

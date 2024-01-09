@@ -67,7 +67,7 @@ def panel():
     # Realizar consulta a la base de datos Cassandra
     clients = session.execute("SELECT * FROM clientes")
     products = session.execute("SELECT * FROM productos")
-    bills = session.execute("SELECT * FROM factura")
+    bills = session.execute("SELECT * FROM facturas")
 
     # Mostrar resultados en una plantilla HTML
     return render_template('panel.html', clients=clients, products=products, bills=bills)
@@ -102,7 +102,7 @@ def productos_index():
 @app.route('/facturas')
 def facturas_index():
 
-    bills = session.execute("SELECT * FROM factura")
+    bills = session.execute("SELECT * FROM facturas")
 
     # Lógica para la página de facturas
     return render_template('facturas/index.html', bills=bills)
@@ -210,8 +210,20 @@ def formulario_factura():
             session.execute(query_update_stock, (nuevo_stock, id_producto))
 
             # Guardar los datos en la factura en la tabla
-            query_insert_factura = "INSERT INTO supermarket.factura (id, ci_cliente, amount, date, payment_method, id_producto) VALUES (uuid(), %s, %s, %s, %s, %s)"
-            session.execute(query_insert_factura, (ci_cliente, producto.price, fecha, metodo_pago, id_producto))
+            query_insert_factura = "INSERT INTO supermarket.facturas (id, ci_cliente, name_cliente, last_name_cliente, name_producto, description_producto, promotion_producto, amount, date, payment_method, id_producto) VALUES (uuid(), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+
+            session.execute(query_insert_factura, (
+                ci_cliente, 
+                cliente.name, 
+                cliente.last_name, 
+                producto.name, 
+                producto.description, 
+                producto.promotion, 
+                producto.price, 
+                fecha, 
+                metodo_pago, 
+                id_producto
+            ))
 
             return redirect(url_for('panel'))
     
@@ -338,23 +350,12 @@ def detalles_factura(bill_id):
     id_factura = UUID(bill_id)
 
     # Consultar la información de la factura
-    query_factura = "SELECT * FROM supermarket.factura WHERE id = %s"
+    query_factura = "SELECT * FROM supermarket.facturas WHERE id = %s"
     factura = session.execute(query_factura, (id_factura,)).one()
 
     if factura:
-        # Si se encuentra la factura, obtener detalles del cliente y producto asociados
-        ci_cliente = factura.ci_cliente
-        id_producto = factura.id_producto
 
-        # Consultar la información del cliente
-        query_cliente = "SELECT * FROM clientes WHERE ci = %s"
-        cliente = session.execute(query_cliente, (ci_cliente,)).one()
-
-        # Consultar la información del producto
-        query_producto = "SELECT * FROM supermarket.productos WHERE id = %s"
-        producto = session.execute(query_producto, (id_producto,)).one()
-
-        return render_template('facturas/details.html', factura=factura, cliente=cliente, producto=producto)
+        return render_template('facturas/details.html', factura=factura)
     else:
         return redirect(url_for('facturas_index'))
 #----------------------------------------Lógica de Facturas/Detalles
@@ -430,18 +431,18 @@ def buscar_factura():
         # Manejar el caso en el que el UUID no sea válido
         return redirect(url_for('facturas_index'))
     
-    query = "SELECT * FROM factura WHERE id = %s"
+    query = "SELECT * FROM facturas WHERE id = %s"
     factura_encontrado = session.execute(query, (id_factura,)).one()
 
     if factura_encontrado: 
         # Si se encuentra el producto, enviar los datos a la plantilla 
         factura = { 
             'id': factura_encontrado.id,
-            'ci_cliente' : factura_encontrado.ci_cliente,
-            'id_producto' : factura_encontrado.id_producto,
-            'amount' : factura_encontrado.amount,
-            'date' : factura_encontrado.date,
-            'payment_method' : factura_encontrado.payment_method
+            'ci_cliente': factura_encontrado.ci_cliente,
+            'id_producto': factura_encontrado.id_producto,
+            'amount': factura_encontrado.amount,
+            'date': factura_encontrado.date,
+            'payment_method': factura_encontrado.payment_method
         } 
         return render_template('facturas/index.html', factura_encontrado=factura) 
     else: 
@@ -457,7 +458,7 @@ def buscar_factura_cedula():
     cedula = int(request.args.get('id'))  # Obtener la cédula del parámetro GET
 
     #Consulta a la base de datos Cassandra
-    query = "SELECT * FROM supermarket.factura WHERE ci_cliente = %s ALLOW FILTERING"
+    query = "SELECT * FROM supermarket.facturas WHERE ci_cliente = %s ALLOW FILTERING"
     result = session.execute(query, (cedula,))
     
     bills = list(result)
@@ -469,32 +470,25 @@ def buscar_factura_cedula():
 #----------------------------------------Lógica de Facturas/Producto más Vendido
 @app.route('/producto_mas_vendido', methods=['GET'])
 def producto_mas_vendido():
+
     # Consultar la información de todas las facturas
-    query_facturas = "SELECT * FROM supermarket.factura"
+    query_facturas = "SELECT * FROM supermarket.facturas"
     facturas = session.execute(query_facturas)
 
     # Crear un diccionario para contar la cantidad de veces que aparece cada producto
-    productos_vendidos = Counter([str(f.id_producto) for f in facturas])
+    productos_vendidos = Counter([(f.id_producto, f.name_producto, f.description_producto) for f in facturas])
 
     # Encontrar el producto más vendido
     if productos_vendidos:
+        producto_mas_vendido_id, nombre_producto, descripcion_producto = max(productos_vendidos, key=productos_vendidos.get)
 
-        producto_mas_vendido_id = max(productos_vendidos, key=productos_vendidos.get)
+        producto_mas_vendido = {
+            'id_producto': producto_mas_vendido_id,
+            'name_producto': nombre_producto,
+            'description_producto': descripcion_producto
+        }
 
-        # Consultar la información del producto más vendido
-        query_producto = "SELECT * FROM supermarket.productos WHERE id = %s"
-        producto_mas_vendido = session.execute(query_producto, (UUID(producto_mas_vendido_id),)).one()
-
-        # Ahora obtenemos los datos del producto más vendido 
-        if producto_mas_vendido:
-
-            # Consultar la información del producto usando el código del producto más vendido
-            query_producto_by_code = "SELECT * FROM supermarket.productos WHERE id = %s"
-            producto_por_codigo = session.execute(query_producto_by_code, (producto_mas_vendido.id,)).one()
-
-            return render_template('Facturas/top.html', producto_mas_vendido=producto_por_codigo)
-        else:
-            return render_template('Facturas/top.html', producto_mas_vendido=None)
+        return render_template('Facturas/top.html', producto_mas_vendido=producto_mas_vendido)
     else:
         return render_template('Facturas/top.html', producto_mas_vendido=None)
 #----------------------------------------Lógica de Facturas/Producto más Vendido
