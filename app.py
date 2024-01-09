@@ -465,8 +465,8 @@ def buscar_factura_cedula():
     return render_template('facturas/index.html', bills=bills)
 #----------------------------------------Lógica de Facturas/Botón Busqueda por Cédula
 
-#----------------------------------------prueba producto mas vendido
 
+#----------------------------------------Lógica de Facturas/Producto más Vendido
 @app.route('/producto_mas_vendido', methods=['GET'])
 def producto_mas_vendido():
     # Consultar la información de todas las facturas
@@ -478,38 +478,26 @@ def producto_mas_vendido():
 
     # Encontrar el producto más vendido
     if productos_vendidos:
+
         producto_mas_vendido_id = max(productos_vendidos, key=productos_vendidos.get)
+
         # Consultar la información del producto más vendido
         query_producto = "SELECT * FROM supermarket.productos WHERE id = %s"
         producto_mas_vendido = session.execute(query_producto, (UUID(producto_mas_vendido_id),)).one()
 
-
-         # Ahora obtenemos los datos del producto más vendido 
+        # Ahora obtenemos los datos del producto más vendido 
         if producto_mas_vendido:
+
             # Consultar la información del producto usando el código del producto más vendido
             query_producto_by_code = "SELECT * FROM supermarket.productos WHERE id = %s"
             producto_por_codigo = session.execute(query_producto_by_code, (producto_mas_vendido.id,)).one()
 
-            """if producto_por_codigo: 
-            # Si se encuentra el producto, enviar los datos a la plantilla 
-             producto = { 
-            'id': producto_por_codigo.id,
-            'name': producto_por_codigo.name,
-            'description': producto_por_codigo.description,
-            'stock': producto_por_codigo.stock,
-            'promotion': producto_por_codigo.promotion,
-            'price': producto_por_codigo.price
-             } """
             return render_template('Facturas/top.html', producto_mas_vendido=producto_por_codigo)
         else:
             return render_template('Facturas/top.html', producto_mas_vendido=None)
     else:
         return render_template('Facturas/top.html', producto_mas_vendido=None)
-      
-
-
-
-#----------------------------------------prueba producto mas vendido
+#----------------------------------------Lógica de Facturas/Producto más Vendido
 
 
 if __name__ == '__main__':
