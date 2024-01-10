@@ -83,7 +83,7 @@
                                         
                                         <div class="mb-4 pb-2">
                                             <label class="form-label" for="form3Examplea4">Indique si el producto está en promoción: </label>
-                                            <select class="select" name="promocion" required>
+                                            <select class="select form-control-lg" name="promocion" required>
                                                 <option value="" selected disabled hidden>Seleccione una opción</option>
                                                 <option value="Sí" {% if producto.promocion %} selected {% endif %}>Sí</option>
                                                 <option value="No" {% if not producto.promocion %} selected {% endif %}>No</option>
@@ -100,6 +100,7 @@
                                         <div class="row">
 
                                             <button type="submit" class="btn btn-light btn-lg" style="background-color: #02B1F4; color: white;" data-mdb-ripple-color="dark">Registrar</button>
+                                            <a  class="btn btn-light btn-lg" style="background-color: rgb(235, 127, 127); color: white;" href="{{ url_for('productos_index') }}">Cancelar</a>
                                         </div>
                                     </div>
 

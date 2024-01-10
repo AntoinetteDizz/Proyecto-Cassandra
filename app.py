@@ -25,9 +25,15 @@ def logout():
 def crear_cliente(): 
     return render_template('Clientes/create.html') 
  
-@app.route('/crear_factura') 
-def crear_factura(): 
-    return render_template('Facturas/create.html') 
+@app.route('/crear_factura', methods=['GET']) 
+def crear_factura():
+
+    # Consultar la base de datos para obtener los códigos de productos disponibles
+    query = "SELECT id, name FROM supermarket.productos"
+    productos = session.execute(query)
+
+    # Renderizar el formulario con los códigos de producto como opciones
+    return render_template('Facturas/create.html', productos=productos)
  
 @app.route('/crear_producto') 
 def crear_producto(): 
